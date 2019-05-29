@@ -33,15 +33,15 @@ variable "template" {
 
 # must match what was used in autoprov-cfg config
 variable "sickey" {
-  default = "vpn12345"
+  default = ""
 }
 
 variable "admin_password" {
-  default = "Qazwsx54321!"
+  default = ""
 }
 
 variable "ssh_key" {
-  default = "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAikXkiLo1sJDe4dIOKbaUA/jSJW/jHpa53z52qRWnsJmt6cK4vJa2Os0NqW9oz2Wxui+cd14JtVRjuSA7nNRNgwPM8Z69tvP0pZvaMB8MC9C4PpE6gCpInLszCDEUWCy5RZfE9nTyoAKCjSSJUTCefdeZ0mkdmvEW/Kuhdjilgb9O31Amn8zvnj5JL79hjk7L7pZTV20kvu7KVECvgfEX1zTcxZHo3PTVE6zZ1YCDU5OR0XKhNbG3Q4cLByT3nf6yEgZQCe01kaz1bageCv6b3PqIJQ9rAe9n6N43xonXENywjQzgtj0P0/TRDMQHWxvW9lOGWRGaL7KHpDd9daX83w== Azure"
+  default = "ssh-rsa AAAAB3NzaC1yc2EAdeZ0xonXENywjQzgtj0P0/TRDMQHWx"
 }
 
 variable "envtags" {
