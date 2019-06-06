@@ -3,11 +3,12 @@ Deploys a collapsed Check Point Cloud Security Blueprint using Terraform with VM
 Public accessible Jumphost in West spoke and public load balanced web site (2 x Web servers) in East spoke.
 
 Needs:
-- terraform installed or run from Azure CLI
-    https://azurecitadel.com/prereqs/wsl/
+- terraform installed version 0.12 or above
+        - Eg. https://azurecitadel.com/prereqs/wsl/
+        - or run from Azure CLI
 - an existing R80.20 Check Point Management prepared with autoprovision and policy for the VMSS's
     https://sc1.checkpoint.com/documents/IaaS/WebAdminGuides/EN/CP_VMSS_for_Azure/html_frameset.htm
-- Azure credentials in variable file or better as Environment Variables on the host
+- If not running from Azure CLI add credentials in variable file or better as Environment Variables on the host
     Example added to the end of .bashrc on your host
         export ARM_CLIENT_ID="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxx"
         export ARM_CLIENT_SECRET="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
