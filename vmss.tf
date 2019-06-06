@@ -217,8 +217,8 @@ templateName = vmss-v2 \
 isBlink = True \
 templateVersion = 20190320 \
 bootstrapScript64 ="${var.bootstrap}"\
-location = ${var.location} \
-sicKey = ${var.sickey} \
+location ="${var.location}"\
+sicKey ="${var.sickey}"\
 vnet ="${var.hub_cidr}"
 	EOF
 }
