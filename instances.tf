@@ -19,8 +19,7 @@ resource "azurerm_storage_account" "mystorageaccount" {
     location                    = "${var.location}"
     account_tier                = "Standard"
     account_replication_type    = "LRS"
-    tags               		= "${var.envtags}"
-}
+	tags               			= "${var.envtags}"}
 
 ##########################################
 ########### Security Groups  #############

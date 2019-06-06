@@ -41,7 +41,7 @@ variable "admin_password" {
 }
 
 variable "ssh_key" {
-  default = "ssh-rsa AAAAB3NzaC1yc2EAdeZ0xonXENywjQzgtj0P0/TRDMQHWx"
+  default = ""
 }
 
 variable "envtags" {
@@ -73,6 +73,11 @@ variable "vm_name1" {
 
 variable "vm_name2" {
   default = "Web-West02"
+}
+
+# bootstrap BASH script base64encoded
+variable "bootstrap" {
+  default = ""
 }
 
 variable "ubuntu_user_data" {
