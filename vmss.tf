@@ -200,28 +200,28 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
 #   disk_size_gb   = 100
 # }
 
-# For Check Point user notused must be used
- os_profile {
-   computer_name_prefix = "cpvmss"
-   admin_username       = "notused"
-   admin_password       = "${var.admin_password}"
+  # For Check Point user notused must be used
+  os_profile {
+    computer_name_prefix = "cpvmss"
+    admin_username       = "notused"
+    admin_password       = "${var.admin_password}"
 
-# formatting is crucial here. Do not change 
-   custom_data = <<-EOF
-#!/usr/bin/python /etc/cloud_config.py
-
-installationType = vmss \
-allowUploadDownload = True \
-osVersion = R80.20 \
-templateName = vmss-v2 \
-isBlink = True \
-templateVersion = 20190320 \
-bootstrapScript64 = "${var.bootstrap}" \
-location = "${var.location}" \
-sicKey = "${var.sickey}" \
-vnet = "${var.hub_cidr}"
-	EOF
-}
+    # formatting is crucial here. Do not change
+    custom_data = <<-EOF
+    #!/usr/bin/python /etc/cloud_config.py
+    
+    installationType = vmss \
+    allowUploadDownload = True \
+    osVersion = R80.20 \
+    templateName = vmss-v2 \
+    isBlink = True \
+    templateVersion = 20190320 \
+    bootstrapScript64 = "${var.bootstrap}" \
+    location = "${var.location}" \
+    sicKey = "${var.sickey}" \
+    vnet = "${var.hub_cidr}"
+    EOF
+    }
 
 # For Check Point user notused must be used
  os_profile_linux_config {
@@ -348,7 +348,7 @@ resource "azurerm_monitor_autoscale_setting" "test" {
     email {
       send_to_subscription_administrator    = true
       send_to_subscription_co_administrator = true
-      custom_emails                         = ["astrand@checkpoint.com"]
+      custom_emails                         = ["${var.notify_email}"]
     }
   }
 }

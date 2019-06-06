@@ -33,15 +33,19 @@ variable "template" {
 
 # must match what was used in autoprov-cfg config
 variable "sickey" {
-  default = ""
+  default = "vpn12345"
 }
 
 variable "admin_password" {
-  default = ""
+  default = "Qazwsx54321!"
 }
 
 variable "ssh_key" {
-  default = ""
+  default = "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAikXkiLo1sJDe4dIOKbaUA/jSJW/jHpa53z52qRWnsJmt6cK4vJa2Os0NqW9oz2Wxui+cd14JtVRjuSA7nNRNgwPM8Z69tvP0pZvaMB8MC9C4PpE6gCpInLszCDEUWCy5RZfE9nTyoAKCjSSJUTCefdeZ0mkdmvEW/Kuhdjilgb9O31Amn8zvnj5JL79hjk7L7pZTV20kvu7KVECvgfEX1zTcxZHo3PTVE6zZ1YCDU5OR0XKhNbG3Q4cLByT3nf6yEgZQCe01kaz1bageCv6b3PqIJQ9rAe9n6N43xonXENywjQzgtj0P0/TRDMQHWxvW9lOGWRGaL7KHpDd9daX83w== Azure"
+}
+
+variable "notify_email" {
+  default = "astrand@checkpoint.com"
 }
 
 variable "envtags" {
@@ -77,7 +81,7 @@ variable "vm_name2" {
 
 # bootstrap BASH script base64encoded
 variable "bootstrap" {
-  default = ""
+  default = "IyEvYmluL2Jhc2gKY2xpc2ggLWMgImxvY2sgZGF0YWJhc2Ugb3ZlcnJpZGUiCklOVEVSTkFMX1NVQk5FVDE9IjIuMi4yLjIvMzIiCkFaVVJFX1JPVVRFUj0iMTAuMS4xLjEiCmNsaXNoIC1zIC1jICJzZXQgc3RhdGljLXJvdXRlICRJTlRFUk5BTF9TVUJORVQxIG5leHRob3AgZ2F0ZXdheSBhZGRyZXNzICRBWlVSRV9ST1VURVIgb24iCg=="
 }
 
 variable "ubuntu_user_data" {
