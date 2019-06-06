@@ -49,22 +49,22 @@ variable "notify_email" {
 }
 
 variable "envtags" {
- description = "A map of the tags to use for other resources that are deployed"
- type        = "map"
+  description = "A map of the tags to use for other resources that are deployed"
+  type        = map(string)
 
- default = {
-   environment = "vmss"
- }
+  default = {
+    environment = "vmss"
+  }
 }
 
 variable "servertags" {
- description = "A map of the tags to use for server resources that are deployed"
- type        = "map"
+  description = "A map of the tags to use for server resources that are deployed"
+  type        = map(string)
 
- default = {
-   environment = "vmss"
-   access = "internet"
- }
+  default = {
+    environment = "vmss"
+    access      = "internet"
+  }
 }
 
 variable "vm_mgmt" {
@@ -95,10 +95,10 @@ variable "ubuntu_user_data" {
                       --url https://www.checkpoint.com/wp-content/uploads/cloudguard-hero-image.png ; do
                        sleep 1
                     done
-                    sudo chmod a+w /var/www/html/index.html 
+                    sudo chmod a+w /var/www/html/index.html
                     echo "<html><head><meta http-equiv=refresh content="5" /> </head><body><center><H1>" > /var/www/html/index.html
                     echo $HOSTNAME >> /var/www/html/index.html
                     echo "<BR><BR>Check Point CloudGuard VMSS Demo <BR><BR>Any Cloud, Any App, Unmatched Security<BR><BR>" >> /var/www/html/index.html
                     echo "<img src=\"/CloudGuard.png\" height=\"25%\">" >> /var/www/html/index.html
-                    EOF
+EOF
 }

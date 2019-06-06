@@ -12,9 +12,9 @@ resource "random_string" "fqdn" {
 # NSG for VMSS
 resource "azurerm_network_security_group" "vmssnsg" {
   name                = "CPVMSS_nsg"
-  location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
-  tags                = "${var.envtags}"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg2.name
+  tags                = var.envtags
 
   security_rule {
     name                       = "AllowAllInBound"
@@ -36,12 +36,12 @@ resource "azurerm_network_security_group" "vmssnsg" {
 # Public IP for External LB
 resource "azurerm_public_ip" "vmss-extlb" {
   name                = "CPVMSS-app-1"
-  location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg2.name
   allocation_method   = "Static"
-  domain_name_label   = "${random_string.fqdn.result}"
+  domain_name_label   = random_string.fqdn.result
   sku                 = "Standard"
-  tags                = "${var.envtags}"
+  tags                = var.envtags
 }
 
 ##########################################
@@ -51,33 +51,33 @@ resource "azurerm_public_ip" "vmss-extlb" {
 # External VMSS Load Balancer
 resource "azurerm_lb" "vmssext" {
   name                = "frontend-lb"
-  location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg2.name
   sku                 = "Standard"
 
   frontend_ip_configuration {
     name                 = "CPVMSS-app-1"
-    public_ip_address_id = "${azurerm_public_ip.vmss-extlb.id}"
+    public_ip_address_id = azurerm_public_ip.vmss-extlb.id
   }
 
-  tags = "${var.envtags}"
+  tags = var.envtags
 }
 
 # Internal VMSS Load Balancer
 resource "azurerm_lb" "vmssint" {
   name                = "backend-lb"
-  location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg2.name
   sku                 = "Standard"
 
   frontend_ip_configuration {
     name                          = "CPVMSS-int"
-    subnet_id                     = "${azurerm_subnet.sub4.id}"
-    private_ip_address            = "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
+    subnet_id                     = azurerm_subnet.sub4.id
+    private_ip_address            = cidrhost(azurerm_subnet.sub4.address_prefix, 4)
     private_ip_address_allocation = "Static"
   }
 
-  tags = "${var.envtags}"
+  tags = var.envtags
 }
 
 ##########################################
@@ -86,15 +86,15 @@ resource "azurerm_lb" "vmssint" {
 
 # Backend pool for External LB
 resource "azurerm_lb_backend_address_pool" "bpepool1" {
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
-  loadbalancer_id     = "${azurerm_lb.vmssext.id}"
+  resource_group_name = azurerm_resource_group.rg2.name
+  loadbalancer_id     = azurerm_lb.vmssext.id
   name                = "FrontEndAddressPool"
 }
 
 # Backend pool for Internal LB
 resource "azurerm_lb_backend_address_pool" "bpepool2" {
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
-  loadbalancer_id     = "${azurerm_lb.vmssint.id}"
+  resource_group_name = azurerm_resource_group.rg2.name
+  loadbalancer_id     = azurerm_lb.vmssint.id
   name                = "BackEndAddressPool"
 }
 
@@ -104,8 +104,8 @@ resource "azurerm_lb_backend_address_pool" "bpepool2" {
 
 # LB probe for External LB
 resource "azurerm_lb_probe" "vmssprobe1" {
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
-  loadbalancer_id     = "${azurerm_lb.vmssext.id}"
+  resource_group_name = azurerm_resource_group.rg2.name
+  loadbalancer_id     = azurerm_lb.vmssext.id
   name                = "cp-probe"
   protocol            = "Tcp"
   port                = 8117
@@ -115,8 +115,8 @@ resource "azurerm_lb_probe" "vmssprobe1" {
 
 # LB probe for Internal LB
 resource "azurerm_lb_probe" "vmssprobe2" {
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
-  loadbalancer_id     = "${azurerm_lb.vmssint.id}"
+  resource_group_name = azurerm_resource_group.rg2.name
+  loadbalancer_id     = azurerm_lb.vmssint.id
   name                = "cp-probe"
   protocol            = "Tcp"
   port                = 8117
@@ -130,28 +130,28 @@ resource "azurerm_lb_probe" "vmssprobe2" {
 
 # LB rule Web inbound
 resource "azurerm_lb_rule" "lbwebrule" {
-  resource_group_name            = "${azurerm_resource_group.rg2.name}"
-  loadbalancer_id                = "${azurerm_lb.vmssext.id}"
+  resource_group_name            = azurerm_resource_group.rg2.name
+  loadbalancer_id                = azurerm_lb.vmssext.id
   name                           = "web"
   protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 8081
-  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.bpepool1.id}"
+  backend_address_pool_id        = azurerm_lb_backend_address_pool.bpepool1.id
   frontend_ip_configuration_name = "CPVMSS-app-1"
-  probe_id                       = "${azurerm_lb_probe.vmssprobe1.id}"
+  probe_id                       = azurerm_lb_probe.vmssprobe1.id
 }
 
 # LB rule HA ports outbound
 resource "azurerm_lb_rule" "lb_haports_rule" {
-  resource_group_name            = "${azurerm_resource_group.rg2.name}"
-  loadbalancer_id                = "${azurerm_lb.vmssint.id}"
+  resource_group_name            = azurerm_resource_group.rg2.name
+  loadbalancer_id                = azurerm_lb.vmssint.id
   name                           = "lb_haports_rule"
   protocol                       = "All"
   frontend_port                  = 0
   backend_port                   = 0
-  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.bpepool2.id}"
+  backend_address_pool_id        = azurerm_lb_backend_address_pool.bpepool2.id
   frontend_ip_configuration_name = "CPVMSS-int"
-  probe_id                       = "${azurerm_lb_probe.vmssprobe2.id}"
+  probe_id                       = azurerm_lb_probe.vmssprobe2.id
 }
 
 ##########################################
@@ -161,10 +161,10 @@ resource "azurerm_lb_rule" "lb_haports_rule" {
 # Check Point R80.20 BYOL (blink) VMSS with AZ
 resource "azurerm_virtual_machine_scale_set" "vmss" {
   name                = "CPVMSS"
-  location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg2.name
   upgrade_policy_mode = "Manual"
-  zones               = [1,2]
+  zones               = [1, 2]
 
   plan {
     name      = "sg-byol"
@@ -183,7 +183,7 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
     offer     = "check-point-cg-r8020-blink-v2"
     sku       = "sg-byol"
     #   version   = "8020.900005.0436"
-    version   = "latest"
+    version = "latest"
   }
 
   storage_profile_os_disk {
@@ -204,7 +204,7 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
   os_profile {
     computer_name_prefix = "cpvmss"
     admin_username       = "notused"
-    admin_password       = "${var.admin_password}"
+    admin_password       = var.admin_password
 
     # formatting is crucial here. Do not change
     custom_data = <<-EOF
@@ -229,20 +229,22 @@ EOF
     disable_password_authentication = false
     ssh_keys {
       path = "/home/notused/.ssh/authorized_keys"
-      key_data = "${var.ssh_key}"
+      key_data = var.ssh_key
     }
   }
+
   # External interface with Public IP
   network_profile {
     name = "eth0"
     primary = true
     accelerated_networking = "true"
     ip_forwarding = "true"
+    network_security_group_id = azurerm_network_security_group.vmssnsg.id
 
     ip_configuration {
       name = "ipconfig1"
-      subnet_id = "${azurerm_subnet.sub3.id}"
-      load_balancer_backend_address_pool_ids = ["${azurerm_lb_backend_address_pool.bpepool1.id}"]
+      subnet_id = azurerm_subnet.sub3.id
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.bpepool1.id]
       primary = true
 
       public_ip_address_configuration {
@@ -259,12 +261,12 @@ EOF
     primary = false
     accelerated_networking = "true"
     ip_forwarding = "true"
-    network_security_group_id = "${azurerm_network_security_group.vmssnsg.id}"
+    network_security_group_id = azurerm_network_security_group.vmssnsg.id
 
     ip_configuration {
       name = "ipconfig2"
-      subnet_id = "${azurerm_subnet.sub4.id}"
-      load_balancer_backend_address_pool_ids = ["${azurerm_lb_backend_address_pool.bpepool2.id}"]
+      subnet_id = azurerm_subnet.sub4.id
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.bpepool2.id]
       primary = false
     }
   }
@@ -273,7 +275,7 @@ EOF
   tags = {
     x-chkp-anti-spoofing = "eth0:false,eth1:false"
     x-chkp-ip-address = "public"
-    x-chkp-management = "${var.management}"
+    x-chkp-management = var.management
     x-chkp-management-interface = "eth0"
     x-chkp-srcImageUri = "noCustomUri"
     x-chkp-template = var.template
@@ -282,16 +284,15 @@ EOF
   }
 }
 
-
 ##########################################
 ######### VMSS Autscale settings #########
 ##########################################
 
 resource "azurerm_monitor_autoscale_setting" "test" {
   name = "myAutoscaleSetting"
-  resource_group_name = "${azurerm_resource_group.rg2.name}"
-  location            = "${var.location}"
-  target_resource_id  = "${azurerm_virtual_machine_scale_set.vmss.id}"
+  resource_group_name = azurerm_resource_group.rg2.name
+  location = var.location
+  target_resource_id = azurerm_virtual_machine_scale_set.vmss.id
 
   profile {
     name = "defaultProfile"
@@ -305,7 +306,7 @@ resource "azurerm_monitor_autoscale_setting" "test" {
     rule {
       metric_trigger {
         metric_name = "Percentage CPU"
-        metric_resource_id = "${azurerm_virtual_machine_scale_set.vmss.id}"
+        metric_resource_id = azurerm_virtual_machine_scale_set.vmss.id
         time_grain = "PT1M"
         statistic = "Average"
         time_window = "PT5M"
@@ -325,7 +326,7 @@ resource "azurerm_monitor_autoscale_setting" "test" {
     rule {
       metric_trigger {
         metric_name = "Percentage CPU"
-        metric_resource_id = "${azurerm_virtual_machine_scale_set.vmss.id}"
+        metric_resource_id = azurerm_virtual_machine_scale_set.vmss.id
         time_grain = "PT1M"
         statistic = "Average"
         time_window = "PT5M"
@@ -347,7 +348,7 @@ resource "azurerm_monitor_autoscale_setting" "test" {
     email {
       send_to_subscription_administrator = true
       send_to_subscription_co_administrator = true
-      custom_emails = ["${var.notify_email}"]
+      custom_emails = ["var.notify_email"]
     }
   }
 }
