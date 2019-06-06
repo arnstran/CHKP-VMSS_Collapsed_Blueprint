@@ -1,7 +1,7 @@
 # Configure the Microsoft Azure Provider
 
 provider "azurerm" {
- version = "~> 1.29"
+  version = "~> 1.29"
 }
 
 ##########################################
@@ -54,42 +54,42 @@ resource "azurerm_virtual_network" "vn3" {
 
 # Peering West to Hub
 resource "azurerm_virtual_network_peering" "test1" {
-  name                      	= "west2hub"
-  resource_group_name       	= "${azurerm_resource_group.rg1.name}"
-  virtual_network_name      	= "${azurerm_virtual_network.vn1.name}"
-  remote_virtual_network_id 	= "${azurerm_virtual_network.vn3.id}"
-  allow_virtual_network_access	= true
-  allow_forwarded_traffic   	= true
+  name                          = "west2hub"
+  resource_group_name           = "${azurerm_resource_group.rg1.name}"
+  virtual_network_name          = "${azurerm_virtual_network.vn1.name}"
+  remote_virtual_network_id     = "${azurerm_virtual_network.vn3.id}"
+  allow_virtual_network_access  = true
+  allow_forwarded_traffic       = true
 }
 
 # Peering East to Hub
 resource "azurerm_virtual_network_peering" "test2" {
-  name                      	= "east2hub"
-  resource_group_name       	= "${azurerm_resource_group.rg1.name}"
-  virtual_network_name      	= "${azurerm_virtual_network.vn2.name}"
-  remote_virtual_network_id 	= "${azurerm_virtual_network.vn3.id}"
-  allow_virtual_network_access	= true
-  allow_forwarded_traffic   	= true
+  name                          = "east2hub"
+  resource_group_name           = "${azurerm_resource_group.rg1.name}"
+  virtual_network_name          = "${azurerm_virtual_network.vn2.name}"
+  remote_virtual_network_id     = "${azurerm_virtual_network.vn3.id}"
+  allow_virtual_network_access  = true
+  allow_forwarded_traffic       = true
 }
 
 # Peering Hub to West
 resource "azurerm_virtual_network_peering" "test3" {
-  name                      	= "hub2west"
-  resource_group_name       	= "${azurerm_resource_group.rg2.name}"
-  virtual_network_name      	= "${azurerm_virtual_network.vn3.name}"
-  remote_virtual_network_id		= "${azurerm_virtual_network.vn1.id}"
-  allow_virtual_network_access	= true
-  allow_forwarded_traffic   	= true
+  name                          = "hub2west"
+  resource_group_name           = "${azurerm_resource_group.rg2.name}"
+  virtual_network_name          = "${azurerm_virtual_network.vn3.name}"
+  remote_virtual_network_id	    = "${azurerm_virtual_network.vn1.id}"
+  allow_virtual_network_access  = true
+  allow_forwarded_traffic       = true
 }
 
 # Peering Hub to East
 resource "azurerm_virtual_network_peering" "test4" {
-  name                      	= "hub2east"
-  resource_group_name       	= "${azurerm_resource_group.rg2.name}"
-  virtual_network_name      	= "${azurerm_virtual_network.vn3.name}"
-  remote_virtual_network_id 	= "${azurerm_virtual_network.vn2.id}"
-  allow_virtual_network_access	= true
-  allow_forwarded_traffic   	= true
+  name                          = "hub2east"
+  resource_group_name           = "${azurerm_resource_group.rg2.name}"
+  virtual_network_name          = "${azurerm_virtual_network.vn3.name}"
+  remote_virtual_network_id     = "${azurerm_virtual_network.vn2.id}"
+  allow_virtual_network_access  = true
+  allow_forwarded_traffic       = true
 }
 
 ##########################################
@@ -130,33 +130,33 @@ resource "azurerm_subnet" "sub4" {
 
 # Route table for subnet in West
 resource "azurerm_route_table" "rt1" {
-  name							= "rtWest"
-  location						= "${var.location}"
-  resource_group_name			= "${azurerm_resource_group.rg1.name}"
-  disable_bgp_route_propagation	= true
+  name                          = "rtWest"
+  location                      = "${var.location}"
+  resource_group_name           = "${azurerm_resource_group.rg1.name}"
+  disable_bgp_route_propagation = true
 
   route {
-    name						= "to-Internet"
-    address_prefix				= "0.0.0.0/0"
-    next_hop_type				= "VirtualAppliance"
-    next_hop_in_ip_address		= "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
+    name                        = "to-Internet"
+    address_prefix              = "0.0.0.0/0"
+    next_hop_type               = "VirtualAppliance"
+    next_hop_in_ip_address      = "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
   }
   route {
-    name						= "to-internal-current-vnet"
-    address_prefix				= "${element(azurerm_virtual_network.vn1.address_space, 0)}"
-    next_hop_type				= "VirtualAppliance"
-    next_hop_in_ip_address		= "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
+    name                        = "to-internal-current-vnet"
+    address_prefix              = "${element(azurerm_virtual_network.vn1.address_space, 0)}"
+    next_hop_type               = "VirtualAppliance"
+    next_hop_in_ip_address      = "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
   }
   route {
-    name						= "to-internal-other-vnet"
-    address_prefix				= "${element(azurerm_virtual_network.vn2.address_space, 0)}"
-    next_hop_type				= "VirtualAppliance"
-    next_hop_in_ip_address		= "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
+    name                        = "to-internal-other-vnet"
+    address_prefix              = "${element(azurerm_virtual_network.vn2.address_space, 0)}"
+    next_hop_type               = "VirtualAppliance"
+    next_hop_in_ip_address      = "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
   }
   route {
-    name						= "to-internal-current-subnet"
-    address_prefix				= "${azurerm_subnet.sub1.address_prefix}"
-    next_hop_type				= "vnetlocal"
+    name                        = "to-internal-current-subnet"
+    address_prefix              = "${azurerm_subnet.sub1.address_prefix}"
+    next_hop_type               = "vnetlocal"
   }
 }
 
@@ -167,27 +167,27 @@ resource "azurerm_subnet_route_table_association" "rt1sub" {
 
 # Route table for subnet in West
 resource "azurerm_route_table" "rt2" {
-  name							= "rtEast"
-  location						= "${var.location}"
-  resource_group_name			= "${azurerm_resource_group.rg1.name}"
-  disable_bgp_route_propagation	= false
+  name                          = "rtEast"
+  location                      = "${var.location}"
+  resource_group_name           = "${azurerm_resource_group.rg1.name}"
+  disable_bgp_route_propagation = false
 
   route {
-    name						= "to-internal-current-vnet"
-    address_prefix				= "${element(azurerm_virtual_network.vn2.address_space, 0)}"
-    next_hop_type				= "VirtualAppliance"
-    next_hop_in_ip_address		= "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
+    name                        = "to-internal-current-vnet"
+    address_prefix              = "${element(azurerm_virtual_network.vn2.address_space, 0)}"
+    next_hop_type               = "VirtualAppliance"
+    next_hop_in_ip_address      = "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
   }
   route {
-    name						= "to-internal-other-vnet"
-    address_prefix				= "${element(azurerm_virtual_network.vn1.address_space, 0)}"
-    next_hop_type				= "VirtualAppliance"
-    next_hop_in_ip_address		= "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
+    name                        = "to-internal-other-vnet"
+    address_prefix              = "${element(azurerm_virtual_network.vn1.address_space, 0)}"
+    next_hop_type               = "VirtualAppliance"
+    next_hop_in_ip_address      = "${cidrhost(azurerm_subnet.sub4.address_prefix, 4)}"
   }
   route {
-    name						= "to-internal-current-subnet"
-    address_prefix				= "${azurerm_subnet.sub2.address_prefix}"
-    next_hop_type				= "vnetlocal"
+    name                        = "to-internal-current-subnet"
+    address_prefix              = "${azurerm_subnet.sub2.address_prefix}"
+    next_hop_type               = "vnetlocal"
   }
 }
 
