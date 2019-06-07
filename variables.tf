@@ -50,7 +50,7 @@ variable "notify_email" {
 
 variable "envtags" {
   description = "A map of the tags to use for other resources that are deployed"
-  type        = map(string)
+  type        = "map"
 
   default = {
     environment = "vmss"
@@ -59,11 +59,11 @@ variable "envtags" {
 
 variable "servertags" {
   description = "A map of the tags to use for server resources that are deployed"
-  type        = map(string)
+  type        = "map"
 
   default = {
     environment = "vmss"
-    access      = "internet"
+    access = "internet"
   }
 }
 
@@ -79,9 +79,8 @@ variable "vm_name2" {
   default = "Web-West02"
 }
 
-# bootstrap BASH script base64encoded
 variable "bootstrap" {
-  default = "IyEvYmluL2Jhc2gKY2xpc2ggLWMgImxvY2sgZGF0YWJhc2Ugb3ZlcnJpZGUiCklOVEVSTkFMX1NVQk5FVDE9IjIuMi4yLjIvMzIiCkFaVVJFX1JPVVRFUj0iMTAuMS4xLjEiCmNsaXNoIC1zIC1jICJzZXQgc3RhdGljLXJvdXRlICRJTlRFUk5BTF9TVUJORVQxIG5leHRob3AgZ2F0ZXdheSBhZGRyZXNzICRBWlVSRV9ST1VURVIgb24iCg=="
+  default = ""
 }
 
 variable "ubuntu_user_data" {
@@ -95,10 +94,10 @@ variable "ubuntu_user_data" {
                       --url https://www.checkpoint.com/wp-content/uploads/cloudguard-hero-image.png ; do
                        sleep 1
                     done
-                    sudo chmod a+w /var/www/html/index.html
+                    sudo chmod a+w /var/www/html/index.html 
                     echo "<html><head><meta http-equiv=refresh content="5" /> </head><body><center><H1>" > /var/www/html/index.html
                     echo $HOSTNAME >> /var/www/html/index.html
                     echo "<BR><BR>Check Point CloudGuard VMSS Demo <BR><BR>Any Cloud, Any App, Unmatched Security<BR><BR>" >> /var/www/html/index.html
                     echo "<img src=\"/CloudGuard.png\" height=\"25%\">" >> /var/www/html/index.html
-EOF
+                    EOF
 }
