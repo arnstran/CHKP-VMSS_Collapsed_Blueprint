@@ -3,7 +3,7 @@ Deploys a collapsed Check Point Cloud Security Blueprint using Terraform with VM
 Public accessible Jumphost in West spoke and public load balanced web site (2 x Web servers) in East spoke.
 
 Needs:
-- terraform installed version 0.12 or above
+- terraform installed (version 0.11 or below tested and works, 0.12 needs 'terraform 0.12upgarde')
         - Eg. https://azurecitadel.com/prereqs/wsl/
         - or run from Azure CLI
 - an existing R80.20 Check Point Management prepared with autoprovision and policy for the VMSS's
