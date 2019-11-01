@@ -1,5 +1,5 @@
 resource "random_string" "fqdn" {
- length  = 6
+ length  = 10
  special = false
  upper   = false
  number  = false
@@ -168,7 +168,7 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
 
  plan {
     name = "sg-byol"
-    product = "check-point-cg-r8020-blink-v2"
+    product = "check-point-cg-r8030"
     publisher = "checkpoint"
  }
 
@@ -180,9 +180,9 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
 
  storage_profile_image_reference {
    publisher = "checkpoint"
-   offer     = "check-point-cg-r8020-blink-v2"
+   offer     = "check-point-cg-r8030"
    sku       = "sg-byol"
-#   version   = "8020.900005.0436"
+#   version   = "8030.900273.0525"
    version   = "latest"
  }
 
@@ -212,7 +212,7 @@ resource "azurerm_virtual_machine_scale_set" "vmss" {
 
 installationType = vmss \
 allowUploadDownload = True \
-osVersion = R80.20 \
+osVersion = R80.30 \
 templateName = vmss-v2 \
 isBlink = True \
 templateVersion = 20190320 \
@@ -249,7 +249,7 @@ vnet ="${var.hub_cidr}"
       public_ip_address_configuration {
         name              = "instancePublicIP"
         idle_timeout      = 15
-        domain_name_label = "testvmss"
+        domain_name_label = "testvmss-${random_string.fqdn.result}"
       }
    }
  }

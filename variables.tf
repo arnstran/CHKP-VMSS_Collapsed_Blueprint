@@ -23,12 +23,12 @@ variable "east_cidr" {
 
 # must match what was used in autoprov-cfg config
 variable "management" {
-  default = "management-server"
+  default = "mgmt"
 }
 
 # must match what was used in autoprov-cfg config
 variable "template" {
-  default = "VMSStemplate"
+  default = "vmss-template"
 }
 
 # must match what was used in autoprov-cfg config
@@ -41,7 +41,7 @@ variable "admin_password" {
 }
 
 variable "ssh_key" {
-  default = ""
+  default = "ssh-rsa ......"
 }
 
 variable "notify_email" {
