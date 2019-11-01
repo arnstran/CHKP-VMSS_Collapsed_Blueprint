@@ -1,5 +1,5 @@
 # CHKP-VMSS_Collapsed_Blueprint
-Deploys a collapsed Check Point Cloud Security Blueprint using Terraform with a CloudGuard IaaS Scale Set in one hub (used for inbound and outbound traffic).
+Deploys a collapsed Check Point Cloud Security Blueprint in Azure using Terraform with a CloudGuard IaaS Scale Set in one hub (used for inbound and outbound traffic).
 Public accessible Jumphost in East spoke and a public load balanced web site (2 x Web servers) in West spoke.
 
 Requirements:
