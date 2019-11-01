@@ -41,6 +41,7 @@ Put the files in a directory (download or git clone) on your host (the host wher
 
 Testing:
 When the deployment finishes, it prints the IP of the Jumphost and the domain of the web application 
+- When the deployment finished it still takes 5-10 minutes for all the Check Point autoprovison to finish.
 - Test inbound by browsing to the domain from your client
 - Test between spokes (E/W) by SSH'ing to the Jumphost (user:ubuntu and need to use SSH key for authentication) and pinging one of the web servers
 - Test outbound by SSH'ing to one of the web servers from the Jumphost (user:ubuntu and need to use SSH key for authentication to login to the web servers), and ping 8.8.8.8
