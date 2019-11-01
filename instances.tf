@@ -106,13 +106,13 @@ resource "azurerm_virtual_machine" "my_mgmt" {
 
     os_profile {
         computer_name  = "myMgmt"
-        admin_username = "astrand"
+        admin_username = "ubuntu"
     }
 
     os_profile_linux_config {
         disable_password_authentication = true
         ssh_keys {
-            path     = "/home/astrand/.ssh/authorized_keys"
+            path     = "/home/ubuntu/.ssh/authorized_keys"
             key_data = "${var.ssh_key}"
         }
     }
@@ -173,14 +173,14 @@ resource "azurerm_virtual_machine" "my_web1" {
 
     os_profile {
         computer_name  = "myWeb01"
-        admin_username = "astrand"
+        admin_username = "ubuntu"
 		custom_data = "${var.ubuntu_user_data}"
     }
 
     os_profile_linux_config {
         disable_password_authentication = true
         ssh_keys {
-            path     = "/home/astrand/.ssh/authorized_keys"
+            path     = "/home/ubuntu/.ssh/authorized_keys"
             key_data = "${var.ssh_key}"
         }
     }
@@ -241,14 +241,14 @@ resource "azurerm_virtual_machine" "my_web2" {
 
     os_profile {
         computer_name  = "myWeb02"
-        admin_username = "astrand"
+        admin_username = "ubuntu"
 		custom_data = "${var.ubuntu_user_data}"
     }
 
     os_profile_linux_config {
         disable_password_authentication = true
         ssh_keys {
-            path     = "/home/astrand/.ssh/authorized_keys"
+            path     = "/home/ubuntu/.ssh/authorized_keys"
             key_data = "${var.ssh_key}"
         }
     }
